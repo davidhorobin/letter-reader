@@ -9,8 +9,8 @@ f.read(16)
 buffer = f.read(NUM_TRAIN_IMAGES * IMAGE_WIDTH * IMAGE_HEIGHT)
 data = np.frombuffer(buffer, dtype=np.uint8)
 data = data.reshape(NUM_TRAIN_IMAGES, IMAGE_WIDTH, IMAGE_HEIGHT)
-image = np.asarray(data[0]).squeeze()
-
+data = data.transpose(0, 2, 1)
+image = np.asarray(data[29]).squeeze()
 plt.imshow(image)
 plt.show()
 
