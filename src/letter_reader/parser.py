@@ -3,6 +3,7 @@ import gzip
 import matplotlib.pyplot as plt
 from config import *
 
+
 def images_to_array(filename):
     imgs = gzip.open(filename, 'r')
     imgs.seek(0, 2)
@@ -19,20 +20,38 @@ def images_to_array(filename):
 
     return data
 
-def labels_to_dict(filename):
+
+def labels_to_array(filename):
+    labels = gzip.open(filename, 'r')
+
+    labels.read(8)
+    buffer = labels.read()
+    data = np.frombuffer(buffer, dtype=np.uint8)
+
+    labels.close()
+
+    return data
+
+
+def labels_dict(filename):
     labels = open(filename, 'r')
     label_dict = {}
     for row in labels:
         split = row.split(' ')
-        label_dict[int(split[0])] = int(split[1])
+        label_dict[int(split[0])] = chr(int(split[1]))
     labels.close()
     return label_dict
+
 
 def show_image(image_matrix):
     image = np.asarray(image_matrix).squeeze()
     plt.imshow(image_matrix, cmap='gray')
     plt.show()
 
-label_map = labels_to_dict(MAPPING_PATH)
-data = images_to_array(TRAINING_IMG_PATH)
-show_image(data[10])
+
+label_map = labels_dict(MAPPING_PATH)
+imgs = images_to_array(TRAINING_IMG_PATH)
+labels = labels_to_array(TRAINING_LABEL_PATH)
+c = 5678
+print(label_map[labels[c]])
+show_image(imgs[c])
