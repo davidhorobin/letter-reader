@@ -1,7 +1,7 @@
 import numpy as np
 import gzip
-import matplotlib.pyplot as plt
 from config import *
+from graphics import *
 
 
 def images_to_array(filename):
@@ -41,17 +41,3 @@ def labels_dict(filename):
         label_dict[int(split[0])] = chr(int(split[1]))
     labels.close()
     return label_dict
-
-
-def show_image(image_matrix):
-    image = np.asarray(image_matrix).squeeze()
-    plt.imshow(image_matrix, cmap='gray')
-    plt.show()
-
-
-label_map = labels_dict(MAPPING_PATH)
-imgs = images_to_array(TRAINING_IMG_PATH)
-labels = labels_to_array(TRAINING_LABEL_PATH)
-c = 5678
-print(label_map[labels[c]])
-show_image(imgs[c])
